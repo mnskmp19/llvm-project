@@ -226,7 +226,10 @@ public:
   bool hasFeature(StringRef Feature) const override;
 
   BuiltinVaListKind getBuiltinVaListKind() const override {
-    return TargetInfo::VoidPtrBuiltinVaList;
+    if (ABI == "p32")
+      return TargetInfo::NanoMipsBuiltinVaList;
+    else
+      return TargetInfo::VoidPtrBuiltinVaList;
   }
 
   ArrayRef<const char *> getGCCRegNames() const override {
@@ -345,7 +348,7 @@ public:
     FloatABI = HardFloat;
     DspRev = NoDSP;
     NoOddSpreg = false;
-    FPMode = getDefaultFPMode();
+    FPMode = isFP64Default() ? FP64 : FPXX;
     bool OddSpregGiven = false;
     bool StrictAlign = false;
     bool FpGiven = false;
