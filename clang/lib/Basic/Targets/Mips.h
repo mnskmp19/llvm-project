@@ -348,7 +348,10 @@ public:
     IsNan2008 = isIEEE754_2008Default();
     IsAbs2008 = isIEEE754_2008Default();
     IsSingleFloat = false;
-    FloatABI = HardFloat;
+    if (IsNanoMips)
+      FloatABI = SoftFloat;
+    else
+      FloatABI = HardFloat;
     DspRev = NoDSP;
     NoOddSpreg = false;
     FPMode = isFP64Default() ? FP64 : FPXX;
