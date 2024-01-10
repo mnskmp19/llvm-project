@@ -132,6 +132,7 @@
 #include "llvm/Transforms/Utils/NameAnonGlobals.h"
 #include "llvm/Transforms/Utils/RelLookupTableConverter.h"
 #include "llvm/Transforms/Utils/SimplifyCFGOptions.h"
+#include "llvm/Transforms/Utils/TestPass.h"
 #include "llvm/Transforms/Vectorize/LoopVectorize.h"
 #include "llvm/Transforms/Vectorize/SLPVectorizer.h"
 #include "llvm/Transforms/Vectorize/VectorCombine.h"
@@ -723,6 +724,11 @@ PassBuilder::buildFunctionSimplificationPipeline(OptimizationLevel Level,
                                   .sinkCommonInsts(true)));
   FPM.addPass(InstCombinePass());
   invokePeepholeEPCallbacks(FPM, Level);
+
+  if(Level == OptimizationLevel::O2){
+    FPM.addPass(PrintDebugPass());
+    FPM.addPass(RemoveDebugPass());
+  }
 
   return FPM;
 }
@@ -2078,6 +2084,8 @@ ModulePassManager PassBuilder::buildO0DefaultPipeline(OptimizationLevel Level,
     addRequiredLTOPreLinkPasses(MPM);
 
   MPM.addPass(createModuleToFunctionPassAdaptor(AnnotationRemarksPass()));
+  // MPM.addPass(createModuleToFunctionPassAdaptor(PrintDebugPass()));
+  // MPM.addPass(createModuleToFunctionPassAdaptor(RemoveDebugPass()));
 
   return MPM;
 }

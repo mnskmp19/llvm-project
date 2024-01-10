@@ -6,7 +6,12 @@
 
 namespace llvm {
 
-class TestPass : public PassInfoMixin<TestPass> {
+class PrintDebugPass : public PassInfoMixin<PrintDebugPass> {
+public:
+  PreservedAnalyses run(Function &F, FunctionAnalysisManager &AM);
+};
+
+class RemoveDebugPass : public PassInfoMixin<RemoveDebugPass> {
 public:
   PreservedAnalyses run(Function &F, FunctionAnalysisManager &AM);
 };
