@@ -4691,7 +4691,7 @@ void MipsTargetLowering::writeVarArgRegs(std::vector<SDValue> &OutChains,
     unsigned GPRSaveSize = 4 * (NumGPRArgRegs - Idx);
     MipsFI->setVarArgsGPRSize(GPRSaveSize);
 
-    unsigned StackOffset = State.getNextStackOffset();
+    unsigned StackOffset = State.getStackSize();
     MipsFI->setVarArgsStackIndex(MFI.CreateFixedObject(4, StackOffset, true));
   }
 
